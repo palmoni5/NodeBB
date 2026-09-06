@@ -17,7 +17,7 @@ define('forum/login', ['hooks', 'translator', 'jquery-form'], function (hooks, t
 			const password = $('#password').val();
 			errorEl.addClass('hidden').find('p').text('');
 			if (!username || !password) {
-				errorEl.find('p').translateText('[[error:invalid-username-or-password]]');
+				errorEl.find('p').translateText(!username ? '[[error:username-required]]' : '[[error:password-required]]');
 				errorEl.removeClass('hidden');
 				return;
 			}
@@ -83,14 +83,6 @@ define('forum/login', ['hooks', 'translator', 'jquery-form'], function (hooks, t
 					}
 				},
 			});
-		});
-
-		// Pressing enter in the username field with an empty password moves focus to the password field
-		$('#username').on('keydown', function (e) {
-			if (e.key === 'Enter' && $('#username').val() && !$('#password').val()) {
-				e.preventDefault();
-				$('#password').focus();
-			}
 		});
 
 		// Guard against caps lock
