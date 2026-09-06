@@ -85,6 +85,14 @@ define('forum/login', ['hooks', 'translator', 'jquery-form'], function (hooks, t
 			});
 		});
 
+		// Pressing enter in the username field with an empty password moves focus to the password field
+		$('#username').on('keydown', function (e) {
+			if (e.key === 'Enter' && $('#username').val() && !$('#password').val()) {
+				e.preventDefault();
+				$('#password').focus();
+			}
+		});
+
 		// Guard against caps lock
 		Login.capsLockCheck(document.querySelector('#password'), document.querySelector('#caps-lock-warning'));
 
