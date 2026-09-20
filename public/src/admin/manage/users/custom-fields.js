@@ -1,6 +1,6 @@
 define('admin/manage/user/custom-fields', [
-	'modals', 'alerts', 'iconSelect', 'benchpress', 'jquery-ui/widgets/sortable',
-], function (modals, alerts, iconSelect, Benchpress) {
+	'api', 'modals', 'alerts', 'iconSelect', 'benchpress', 'jquery-ui/widgets/sortable',
+], function (api, modals, alerts, iconSelect, Benchpress) {
 	const manageUserFields = {};
 
 	manageUserFields.init = function () {
@@ -35,12 +35,9 @@ define('admin/manage/user/custom-fields', [
 			$('tbody tr[data-key]').each((index, el) => {
 				fields.push(getDataFromEl($(el)));
 			});
-			socket.emit('admin.user.saveCustomFields', fields, function (err) {
-				if (err) {
-					return alerts.error(err);
-				}
+			api.put('/admin/users/custom-fields', { fields }).then(() => {
 				alerts.success('[[admin/manage/user-custom-fields:custom-fields-saved]]');
-			});
+			}).catch(alerts.error);
 		});
 	};
 
